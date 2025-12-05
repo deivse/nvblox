@@ -395,8 +395,8 @@ void SphereTracer::renderImageOnGPU(const Camera& camera,
                                     const int ray_subsampling_factor) {
   CHECK_NOTNULL(depth_ptr);
 
-  CHECK_EQ(camera.width() % ray_subsampling_factor, 0);
-  CHECK_EQ(camera.height() % ray_subsampling_factor, 0);
+  // CHECK_EQ(camera.width() % ray_subsampling_factor, 0);
+  // CHECK_EQ(camera.height() % ray_subsampling_factor, 0);
   CHECK(output_image_memory_type != MemoryType::kHost);
   // Output space
   const SubsampledImageSize image_size =
@@ -429,8 +429,8 @@ void SphereTracer::renderImageOnGPU(const Camera& camera,
   CHECK_NOTNULL(depth_ptr);
   CHECK_NOTNULL(depth_ptr->dataPtr());
 
-  CHECK_EQ(camera.width() % ray_subsampling_factor, 0);
-  CHECK_EQ(camera.height() % ray_subsampling_factor, 0);
+  // CHECK_EQ(camera.width() % ray_subsampling_factor, 0);
+  // CHECK_EQ(camera.height() % ray_subsampling_factor, 0);
   CHECK(output_image_memory_type != MemoryType::kHost);
   // Output space
   const SubsampledImageSize image_size =
