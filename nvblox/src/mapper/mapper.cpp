@@ -391,12 +391,28 @@ void Mapper::updateMeshTemplate(
   const std::vector<Index3D> blocks_to_update =
       getBlocksToUpdate(blocks_to_update_type, update_full_layer);
 
-  mesh_integrator.integrateBlocksGPU(layers_.get<TsdfLayer>(), blocks_to_update,
-                                     layers_.getPtr<MeshLayerType>());
+  // TODO: this should be probably iterated in a specific order such that the
+  // 7 neighbors of each block are updated before the block itself.
+  // (This wasalready an issue before afaict)
 
-  mesh_integrator.updateAppearance(layers_.get<AppearanceLayerType>(),
-                                   blocks_to_update,
-                                   layers_.getPtr<MeshLayerType>());
+  // Process in slices to save memory.
+  constexpr size_t slice_size = 32768;
+  for (size_t start_idx = 0; start_idx < blocks_to_update.size();
+       start_idx += slice_size) {
+    const size_t end_idx =
+        std::min(start_idx + slice_size, blocks_to_update.size());
+    const std::vector<Index3D> block_slice(blocks_to_update.begin() + start_idx,
+                                           blocks_to_update.begin() + end_idx);
+
+    // Integrate the distance field into the mesh.
+    mesh_integrator.integrateBlocksGPU(layers_.get<TsdfLayer>(), block_slice,
+                                       layers_.getPtr<MeshLayerType>());
+
+    // Update the appearance of the mesh.
+    mesh_integrator.updateAppearance(layers_.get<AppearanceLayerType>(),
+                                     block_slice,
+                                     layers_.getPtr<MeshLayerType>());
+  }
 
   blocks_to_update_tracker_.markBlocksAsUpdated(blocks_to_update_type);
 }
