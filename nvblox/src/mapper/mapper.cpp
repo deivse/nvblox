@@ -113,9 +113,15 @@ void Mapper::setMapperParams(const MapperParams& params) {
   color_integrator().max_integration_distance_m(
       params.projective_integrator_params
           .projective_integrator_max_integration_distance_m);
+  color_integrator().sphere_tracer().maximum_steps(
+      params.projective_integrator_params
+          .projective_appearance_integrator_sphere_tracer_max_steps);
   feature_integrator().max_integration_distance_m(
       params.projective_integrator_params
           .projective_integrator_max_integration_distance_m);
+  feature_integrator().sphere_tracer().maximum_steps(
+      params.projective_integrator_params
+          .projective_appearance_integrator_sphere_tracer_max_steps);
   lidar_tsdf_integrator().max_integration_distance_m(
       params.projective_integrator_params
           .lidar_projective_integrator_max_integration_distance_m);

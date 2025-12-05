@@ -72,6 +72,12 @@ constexpr Param<float>::Description
         "as follows:"
         "x_new = alpha * x_measured + (1 - alpha) * x_old"};
 
+constexpr Param<int>::Description
+    kProjectiveAppearanceIntegratorSphereTracerMaxSteps{
+        "projective_appearance_integrator_sphere_tracer_max_steps", 100,
+        "Maximum number of steps to take when rendering depth for appearance "
+        "integration."};
+
 struct ProjectiveIntegratorParams {
   Param<float> projective_integrator_max_integration_distance_m{
       kProjectiveIntegratorMaxIntegrationDistanceMParamDesc};
@@ -87,6 +93,8 @@ struct ProjectiveIntegratorParams {
       kProjectiveTsdfIntegratorInvalidDepthDecayFactor};
   Param<float> projective_appearance_integrator_measurement_weight{
       kProjectiveAppearanceIntegratorMeasurementWeightParamDesc};
+  Param<int> projective_appearance_integrator_sphere_tracer_max_steps{
+      kProjectiveAppearanceIntegratorSphereTracerMaxSteps};
 };
 
 }  // namespace nvblox
